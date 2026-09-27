@@ -7,6 +7,8 @@ import { useAuthStore } from "@/lib/authStore";
 import { useProfileStore } from "@/lib/profileStore";
 import { getRecommendedSchemes } from "@/lib/eligibilityEngine";
 import { LocationPicker } from "@/components/onboarding/LocationPicker";
+import { UserMenu } from "@/components/auth/UserMenu";
+import { BorderBeamCard, MetalButton } from "@/components/effects/InteractiveEffects";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Card, CardHeader, CardContent } from "@/components/ui/Card";
@@ -98,26 +100,26 @@ export default function UserProfilePage() {
                   AI Advisor
                 </Button>
               </Link>
-              <Button
-                variant="primary"
-                size="sm"
-                onClick={handleSaveAll}
-                loading={isSaving}
-                leftIcon={<Save className="w-4 h-4" />}
-              >
-                Save Profile
-              </Button>
+              <MetalButton preset="chromatic" strength={1} onClick={handleSaveAll}>
+                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900 text-teal-300 text-xs font-semibold border border-teal-500/30">
+                  <Save className="w-3.5 h-3.5 text-teal-400" />
+                  {isSaving ? "Saving..." : "Save Profile"}
+                </span>
+              </MetalButton>
+              <div className="h-4 w-px bg-white/10 hidden sm:block" />
+              <UserMenu />
             </div>
           </div>
         </header>
 
         {/* Content */}
         <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-          {/* Profile Header Hero */}
-          <div className="glass-card rounded-3xl p-6 sm:p-8 relative overflow-hidden border-brand-500/20">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
-              <div className="flex items-center gap-4">
-                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-brand-500/20 to-teal-500/20 border border-brand-500/30 flex items-center justify-center text-brand-300 font-bold text-2xl shadow-glow-sm">
+          {/* Profile Header Hero with BorderBeam Glow */}
+          <BorderBeamCard size="md" colorVariant="colorful" strength={0.75} className="rounded-3xl">
+            <div className="glass-card rounded-3xl p-6 sm:p-8 relative overflow-hidden border-brand-500/20">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-brand-500/20 to-teal-500/20 border border-brand-500/30 flex items-center justify-center text-brand-300 font-bold text-2xl shadow-glow-sm">
                   {(profile.fullName || user?.displayName || "E")[0]?.toUpperCase()}
                 </div>
                 <div>
@@ -175,6 +177,7 @@ export default function UserProfilePage() {
               })}
             </div>
           </div>
+        </BorderBeamCard>
 
           {/* Form Tabs Content */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

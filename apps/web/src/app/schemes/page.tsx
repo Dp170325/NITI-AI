@@ -3,6 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { SCHEMES_DATABASE } from "@/lib/schemesData";
+import { UserMenu } from "@/components/auth/UserMenu";
+import { BorderBeamCard, MetalButton, LiveThinkingOrb } from "@/components/effects/InteractiveEffects";
 import { InfrastructureStatusModal } from "@/components/infrastructure/InfrastructureStatusModal";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
@@ -18,8 +20,7 @@ import {
   X, 
   Check,
   RefreshCw,
-  Globe2,
-  UserCheck
+  Globe2
 } from "lucide-react";
 import { toast } from "sonner";
 import { SchemeDetail } from "@niti-ai/types";
@@ -98,21 +99,21 @@ export default function SchemesExplorerPage() {
           </Link>
 
           <div className="flex items-center gap-2 sm:gap-3">
-            <Link href="/profile">
-              <Button variant="ghost" size="sm" leftIcon={<UserCheck className="w-3.5 h-3.5" />}>
-                Profile
-              </Button>
-            </Link>
             <Link href="/dashboard">
               <Button variant="ghost" size="sm">
                 Dashboard
               </Button>
             </Link>
             <Link href="/chat">
-              <Button variant="primary" size="sm" rightIcon={<Sparkles className="w-3.5 h-3.5" />}>
-                Ask NITI Saathi
-              </Button>
+              <MetalButton preset="chromatic" strength={1}>
+                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900 text-teal-300 text-xs font-semibold border border-teal-500/30">
+                  <Sparkles className="w-3.5 h-3.5 text-teal-400" />
+                  Ask NITI Saathi
+                </span>
+              </MetalButton>
             </Link>
+            <div className="h-4 w-px bg-white/10 hidden sm:block" />
+            <UserMenu />
           </div>
         </div>
       </header>
@@ -136,7 +137,7 @@ export default function SchemesExplorerPage() {
 
           <div className="flex flex-wrap items-center gap-3">
             <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-teal-500/10 border border-teal-500/30 text-xs text-teal-300">
-              <span className="w-2 h-2 rounded-full bg-teal-400 animate-pulse" />
+              <LiveThinkingOrb state="breathing" size={20} theme="dark" />
               <span>Real-Time Sync Active ({SCHEMES_DATABASE.length} Schemes Verified)</span>
             </div>
             <Button
@@ -152,36 +153,38 @@ export default function SchemesExplorerPage() {
           </div>
         </div>
 
-        {/* Selected for Comparison Bar */}
+        {/* Selected for Comparison Bar with BorderBeam Glow */}
         {compareList.length > 0 && (
-          <div className="flex items-center justify-between bg-slate-900 border border-brand-500/30 rounded-2xl p-4 shadow-glow-sm">
-            <div className="flex items-center gap-3">
-              <Scale className="w-5 h-5 text-brand-400" />
-              <div>
-                <span className="text-sm font-semibold text-slate-200">
-                  {compareList.length}/2 Schemes Selected for Comparison
-                </span>
-                <p className="text-xs text-slate-400">
-                  {comparedSchemes.map((s) => s.shortName).join(" vs. ")}
-                </p>
+          <BorderBeamCard size="sm" colorVariant="sunset" strength={0.8} className="rounded-2xl">
+            <div className="flex items-center justify-between bg-slate-900/90 border border-brand-500/30 rounded-2xl p-4 shadow-glow-sm">
+              <div className="flex items-center gap-3">
+                <Scale className="w-5 h-5 text-brand-400" />
+                <div>
+                  <span className="text-sm font-semibold text-slate-200">
+                    {compareList.length}/2 Schemes Selected for Comparison
+                  </span>
+                  <p className="text-xs text-slate-400">
+                    {comparedSchemes.map((s) => s.shortName).join(" vs. ")}
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="primary"
+                  size="sm"
+                  onClick={() => setIsCompareModalOpen(true)}
+                >
+                  Open Side-by-Side Matrix
+                </Button>
+                <button 
+                  onClick={() => setCompareList([])}
+                  className="text-xs text-slate-400 hover:text-slate-200 px-2"
+                >
+                  Clear
+                </button>
               </div>
             </div>
-            <div className="flex items-center gap-2">
-              <Button
-                variant="primary"
-                size="sm"
-                onClick={() => setIsCompareModalOpen(true)}
-              >
-                Open Side-by-Side Matrix
-              </Button>
-              <button 
-                onClick={() => setCompareList([])}
-                className="text-xs text-slate-400 hover:text-slate-200 px-2"
-              >
-                Clear
-              </button>
-            </div>
-          </div>
+          </BorderBeamCard>
         )}
 
         {/* Filter & Search Bar */}

@@ -8,18 +8,16 @@ import { useAuthStore } from "@/lib/authStore";
 import { useProfileStore } from "@/lib/profileStore";
 import { ragAssistant } from "@/lib/ragAssistant";
 import { MarkdownMessage } from "@/components/chat/MarkdownMessage";
-import { InfrastructureStatusModal } from "@/components/infrastructure/InfrastructureStatusModal";
+import { UserMenu } from "@/components/auth/UserMenu";
+import { LiveThinkingOrb, VoiceChatInput } from "@/components/effects/InteractiveEffects";
 import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
 import { ChatMessage } from "@niti-ai/types";
 import { 
   Sparkles, 
-  Send, 
   Bot, 
   User, 
   ArrowLeft, 
   ShieldCheck,
-  UserCheck,
   RefreshCw,
   ExternalLink,
   MessageSquare
@@ -142,6 +140,7 @@ Conversation refreshed. What scheme, loan, or subsidy would you like to explore 
                   <h1 className="font-display font-bold text-base tracking-tight gradient-text">
                     NITI Saathi (नीति साथी)
                   </h1>
+                  <LiveThinkingOrb state="breathing" size={20} theme="dark" />
                   <span className="text-[10px] font-semibold px-2.5 py-0.5 rounded-full bg-teal-500/15 text-teal-300 border border-teal-500/30">
                     ChatGPT-Style Human Mentor
                   </span>
@@ -154,14 +153,6 @@ Conversation refreshed. What scheme, loan, or subsidy would you like to explore 
           </div>
 
           <div className="flex items-center gap-2 sm:gap-3">
-            <div className="hidden lg:block">
-              <InfrastructureStatusModal />
-            </div>
-            <Link href="/profile">
-              <Button variant="ghost" size="sm" leftIcon={<UserCheck className="w-3.5 h-3.5" />}>
-                My Profile
-              </Button>
-            </Link>
             <Link href="/schemes">
               <Button variant="ghost" size="sm">
                 Directory
@@ -176,6 +167,8 @@ Conversation refreshed. What scheme, loan, or subsidy would you like to explore 
             >
               Reset
             </Button>
+            <div className="h-4 w-px bg-white/10 hidden sm:block" />
+            <UserMenu />
           </div>
         </div>
       </header>
@@ -280,45 +273,27 @@ Conversation refreshed. What scheme, loan, or subsidy would you like to explore 
           ))}
 
           {isTyping && (
-            <div className="flex gap-3 sm:gap-4 justify-start w-full">
-              <div className="w-10 h-10 rounded-2xl bg-brand-500/20 border border-brand-500/30 flex items-center justify-center text-brand-400 shrink-0">
-                <Bot className="w-5 h-5" />
+            <div className="flex gap-3 sm:gap-4 justify-start w-full items-center">
+              <div className="shrink-0">
+                <LiveThinkingOrb state="solving" size={64} theme="dark" />
               </div>
-              <div className="glass-card rounded-2xl px-6 py-4 text-xs sm:text-sm text-slate-300 flex items-center gap-3 border border-white/10">
+              <div className="glass-card rounded-2xl px-6 py-4 text-xs sm:text-sm text-slate-300 flex items-center gap-3 border border-brand-500/30 shadow-glow-sm">
                 <span className="w-2.5 h-2.5 rounded-full bg-brand-400 animate-ping" />
-                NITI Saathi is analyzing central and state gazettes & drafting response...
+                <span>NITI Saathi is analyzing central and state gazettes & calculating subsidy figures...</span>
               </div>
             </div>
           )}
         </div>
 
-        {/* Bottom Input Area — Completely Horizontal Full-Width Form */}
+        {/* Bottom Input Area — Sound-Reactive Voice Beam Chat Input */}
         <div className="sticky bottom-0 z-30 pt-3 pb-3 bg-slate-950/90 backdrop-blur-xl border-t border-white/10 w-full mt-4">
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              handleSendMessage();
-            }}
-            className="flex flex-col sm:flex-row gap-3 items-center w-full"
-          >
-            <div className="relative flex-1 w-full">
-              <Input
-                placeholder="Ask anything in English, हिंदी, or Hinglish (e.g. 35% subsidy on ₹20L manufacturing, Mudra loan documents, Women startup grants)..."
-                value={inputText}
-                onChange={(e) => setInputText(e.target.value)}
-                className="w-full text-sm sm:text-base py-3.5 pl-4 pr-12 rounded-2xl bg-slate-900/90 border-white/15 focus:border-brand-500/60 shadow-inner"
-              />
-            </div>
-            <Button
-              type="submit"
-              variant="primary"
-              size="lg"
-              className="w-full sm:w-auto px-8 py-3.5 rounded-2xl text-sm font-semibold shrink-0 shadow-glow-sm"
-              leftIcon={<Send className="w-4 h-4" />}
-            >
-              Ask NITI Saathi
-            </Button>
-          </form>
+          <VoiceChatInput
+            value={inputText}
+            onChange={setInputText}
+            onSubmit={() => handleSendMessage()}
+            isProcessing={isTyping}
+            placeholder="Ask anything in English, हिंदी, or Hinglish (e.g. 35% subsidy on ₹20L manufacturing, Mudra loan documents, Women startup grants)..."
+          />
           <p className="text-[11px] text-slate-500 text-center mt-2">
             NITI Saathi cross-checks information against official Ministry of MSME, JanSamarth, and State Industrial Policy Gazettes.
           </p>

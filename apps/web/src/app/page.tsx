@@ -1,8 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, Sparkles, Globe, Shield, Zap, User, LogOut } from "lucide-react";
+import { ArrowRight, Sparkles, Globe, Shield, Zap } from "lucide-react";
 import { useAuthStore } from "@/lib/authStore";
+import { UserMenu } from "@/components/auth/UserMenu";
+import { BorderBeamCard, LiveThinkingOrb } from "@/components/effects/InteractiveEffects";
 
 // ─── Feature Card ────────────────────────────────────────────────────────────
 function FeatureCard({
@@ -37,7 +39,7 @@ function StatItem({ value, label }: { value: string; label: string }) {
 
 // ─── Main Landing Page ────────────────────────────────────────────────────────
 export default function LandingPage() {
-  const { user, signOut } = useAuthStore();
+  const { user } = useAuthStore();
 
   return (
     <div className="min-h-dvh bg-slate-950 text-slate-100 flex flex-col relative overflow-x-hidden">
@@ -74,18 +76,12 @@ export default function LandingPage() {
               <div className="flex items-center gap-3">
                 <Link
                   href="/dashboard"
-                  className="flex items-center gap-1.5 text-sm text-slate-200 hover:text-white bg-white/10 px-3.5 py-1.5 rounded-lg border border-white/10"
+                  className="hidden sm:flex items-center gap-1.5 text-xs text-slate-200 hover:text-white bg-white/10 px-3.5 py-2 rounded-xl border border-white/10 transition-colors"
                 >
-                  <User className="w-4 h-4 text-brand-400" />
-                  <span>{user.displayName || "Dashboard"}</span>
+                  <Sparkles className="w-3.5 h-3.5 text-brand-400" />
+                  <span>Go to Dashboard</span>
                 </Link>
-                <button
-                  onClick={() => signOut()}
-                  className="text-slate-400 hover:text-red-400 p-1.5 transition-colors"
-                  title="Sign out"
-                >
-                  <LogOut className="w-4 h-4" />
-                </button>
+                <UserMenu />
               </div>
             ) : (
               <>
@@ -111,10 +107,14 @@ export default function LandingPage() {
       <main className="flex-1 relative z-10">
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16 text-center">
 
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 glass-card rounded-full px-4 py-1.5 text-xs text-brand-300 font-medium mb-8 border-brand-500/20">
-            <span className="w-1.5 h-1.5 rounded-full bg-brand-400 animate-pulse" />
-            AI-Powered Government Scheme Discovery
+          {/* Badge with BorderBeam and ThinkingOrb */}
+          <div className="mb-8 inline-block">
+            <BorderBeamCard size="sm" colorVariant="sunset" strength={0.8} className="rounded-full">
+              <div className="inline-flex items-center gap-2.5 glass-card rounded-full px-4 py-1.5 text-xs text-brand-300 font-medium border-brand-500/20 bg-slate-950/80">
+                <LiveThinkingOrb state="breathing" size={20} theme="dark" />
+                <span>AI-Powered Government Scheme Discovery</span>
+              </div>
+            </BorderBeamCard>
           </div>
 
           {/* Headline */}
