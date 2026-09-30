@@ -3,6 +3,7 @@
 > A self-hosted, multilingual AI platform designed to help Indian entrepreneurs seamlessly discover, match, and navigate personalized central and state government schemes, subsidies, and credit-linked financial incentives.
 
 [![Deploy to Cloudflare](https://img.shields.io/badge/Deploy-Cloudflare%20Workers-orange?style=flat&logo=cloudflare)](https://niti-ai.hg497kg.workers.dev/)
+[![Firebase Hosting](https://img.shields.io/badge/Live-Firebase%20Hosting-FFA611?style=flat&logo=firebase)](https://niti--ai.web.app/)
 [![GitHub Pages](https://img.shields.io/badge/Live-GitHub%20Pages-blue?style=flat&logo=github)](https://kgupta171025.github.io/NITI-AI/)
 [![Next.js](https://img.shields.io/badge/Next.js-14.2-black?style=flat&logo=next.js)](https://nextjs.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -11,7 +12,8 @@
 
 ## 🌐 Live Deployments
 
-- **Primary Cloudflare Production:** [https://niti-ai.hg497kg.workers.dev/](https://niti-ai.hg497kg.workers.dev/)
+- **Official Firebase Hosting:** [https://niti--ai.web.app/](https://niti--ai.web.app/) (or [https://niti--ai.firebaseapp.com/](https://niti--ai.firebaseapp.com/))
+- **Cloudflare Production:** [https://niti-ai.hg497kg.workers.dev/](https://niti-ai.hg497kg.workers.dev/)
 - **Alternative Domain:** [https://niti-ai.pages.dev/](https://niti-ai.pages.dev/)
 - **GitHub Pages Portal:** [https://kgupta171025.github.io/NITI-AI/](https://kgupta171025.github.io/NITI-AI/)
 
