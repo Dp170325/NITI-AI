@@ -1,6 +1,13 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback, KeyboardEvent } from "react";
+import {
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+  KeyboardEvent,
+} from "react";
+import { createPortal } from "react-dom";
 import { ChevronDown, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -27,6 +34,29 @@ export interface SelectProps {
   id?: string;
 }
 
+/** Measures the trigger button and returns portal menu position (fixed coords). */
+function getMenuPosition(
+  triggerEl: HTMLButtonElement,
+  align: "left" | "right"
+): { top: number; left: number; width: number } {
+  const rect = triggerEl.getBoundingClientRect();
+  const menuWidth = Math.max(rect.width, 280);
+  let left = align === "right" ? rect.right - menuWidth : rect.left;
+
+  // Keep inside viewport horizontally
+  const viewportWidth = window.innerWidth;
+  if (left + menuWidth > viewportWidth - 8) {
+    left = viewportWidth - menuWidth - 8;
+  }
+  if (left < 8) left = 8;
+
+  return {
+    top: rect.bottom + 8,
+    left,
+    width: menuWidth,
+  };
+}
+
 export function Select({
   value,
   onChange,
@@ -43,16 +73,53 @@ export function Select({
   id,
 }: SelectProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [menuPos, setMenuPos] = useState<{
+    top: number;
+    left: number;
+    width: number;
+  } | null>(null);
+  const [mounted, setMounted] = useState(false);
+
   const containerRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
-  const selectId = id ?? label?.toLowerCase().replace(/\s+/g, "-");
+  const menuRef = useRef<HTMLDivElement>(null);
 
+  const selectId = id ?? label?.toLowerCase().replace(/\s+/g, "-");
   const selectedOption = options.find((opt) => opt.value === value);
 
-  // Close when clicking outside
+  // Hydration guard — portals need document to exist
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Recompute position whenever menu opens or window scrolls/resizes
+  useEffect(() => {
+    if (!isOpen || !triggerRef.current) return;
+    const update = () => {
+      if (triggerRef.current) {
+        setMenuPos(getMenuPosition(triggerRef.current, align));
+      }
+    };
+    update();
+    window.addEventListener("scroll", update, true);
+    window.addEventListener("resize", update);
+    return () => {
+      window.removeEventListener("scroll", update, true);
+      window.removeEventListener("resize", update);
+    };
+  }, [isOpen, align]);
+
+  // Close when clicking outside both trigger AND menu
+  useEffect(() => {
+    if (!isOpen) return;
     function handleClickOutside(event: MouseEvent) {
-      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+      const target = event.target as Node;
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(target) &&
+        menuRef.current &&
+        !menuRef.current.contains(target)
+      ) {
         setIsOpen(false);
       }
     }
@@ -60,12 +127,13 @@ export function Select({
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [isOpen]);
 
-  // Close on Escape key
+  // Close on Escape
   useEffect(() => {
+    if (!isOpen) return;
     function handleKeyDown(event: globalThis.KeyboardEvent) {
-      if (event.key === "Escape" && isOpen) {
+      if (event.key === "Escape") {
         setIsOpen(false);
         triggerRef.current?.focus();
       }
@@ -98,16 +166,12 @@ export function Select({
       e.preventDefault();
       const currentIndex = options.findIndex((opt) => opt.value === value);
       const nextIndex = (currentIndex + 1) % options.length;
-      if (options[nextIndex]) {
-        onChange(options[nextIndex].value);
-      }
+      if (options[nextIndex]) onChange(options[nextIndex].value);
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
       const currentIndex = options.findIndex((opt) => opt.value === value);
       const prevIndex = (currentIndex - 1 + options.length) % options.length;
-      if (options[prevIndex]) {
-        onChange(options[prevIndex].value);
-      }
+      if (options[prevIndex]) onChange(options[prevIndex].value);
     } else if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
       setIsOpen(false);
@@ -115,117 +179,133 @@ export function Select({
     }
   };
 
+  // Portal menu rendered directly on document.body — immune to all stacking contexts
+  const portalMenu =
+    isOpen && mounted && menuPos
+      ? createPortal(
+          <div
+            ref={menuRef}
+            role="listbox"
+            tabIndex={0}
+            onKeyDown={handleMenuKeyDown}
+            style={{
+              position: "fixed",
+              top: menuPos.top,
+              left: menuPos.left,
+              width: menuPos.width,
+              zIndex: 99999,
+            }}
+            className={cn(
+              "rounded-2xl p-2 max-h-72 overflow-y-auto",
+              "bg-slate-900 border border-white/20",
+              "shadow-[0_24px_60px_rgba(0,0,0,0.9)] ring-1 ring-white/10",
+              "space-y-1 animate-in fade-in zoom-in-95 duration-150",
+              menuClassName
+            )}
+          >
+            {options.map((option) => {
+              const isSelected = option.value === value;
+              return (
+                <button
+                  key={option.value}
+                  type="button"
+                  role="option"
+                  aria-selected={isSelected}
+                  onClick={() => handleSelect(option.value)}
+                  className={cn(
+                    "w-full rounded-xl px-3 py-2 text-xs text-left flex items-center justify-between gap-2",
+                    "transition-all duration-150 select-none cursor-pointer",
+                    isSelected
+                      ? "bg-brand-500/20 text-brand-200 border border-brand-500/30 font-semibold"
+                      : "text-slate-300 hover:text-white hover:bg-white/10 border border-transparent"
+                  )}
+                >
+                  <div className="flex flex-col gap-0.5 truncate">
+                    <span className="truncate">{option.label}</span>
+                    {option.description && (
+                      <span className="text-[11px] text-slate-400 font-normal truncate">
+                        {option.description}
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="flex items-center gap-1.5 shrink-0 ml-2">
+                    {option.badge && (
+                      <span className="text-[10px] px-1.5 py-0.5 rounded-lg bg-teal-500/20 text-teal-300 border border-teal-500/30 font-medium">
+                        {option.badge}
+                      </span>
+                    )}
+                    {isSelected && (
+                      <Check className="w-3.5 h-3.5 text-brand-400 shrink-0" />
+                    )}
+                  </div>
+                </button>
+              );
+            })}
+          </div>,
+          document.body
+        )
+      : null;
+
   return (
-    <div className={cn("relative flex flex-col gap-1.5", isOpen ? "z-50" : "z-10", className)} ref={containerRef}>
-      {label && (
-        <label
-          htmlFor={selectId}
-          className="text-sm font-medium text-slate-200 select-none"
-        >
-          {label}
-        </label>
-      )}
-
-      <button
-        ref={triggerRef}
-        id={selectId}
-        type="button"
-        disabled={disabled}
-        onClick={() => !disabled && setIsOpen(!isOpen)}
-        onKeyDown={handleTriggerKeyDown}
-        aria-haspopup="listbox"
-        aria-expanded={isOpen}
-        className={cn(
-          "w-full rounded-xl px-3.5 py-2.5 text-xs text-left",
-          "bg-slate-900/90 border border-white/10 hover:border-white/20 hover:bg-slate-900",
-          "text-slate-100 flex items-center justify-between gap-2",
-          "focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500/60",
-          "transition-all duration-200 select-none shadow-sm",
-          disabled && "opacity-50 cursor-not-allowed",
-          isOpen && "ring-2 ring-brand-500/50 border-brand-500/60 bg-slate-900",
-          error && "border-red-500/60 focus:ring-red-500/40",
-          triggerClassName
-        )}
+    <>
+      <div
+        className={cn("relative flex flex-col gap-1.5", className)}
+        ref={containerRef}
       >
-        <span className={cn("truncate", !selectedOption && "text-slate-500")}>
-          {selectedOption ? selectedOption.label : placeholder}
-        </span>
-        <ChevronDown
-          className={cn(
-            "w-4 h-4 text-slate-400 shrink-0 transition-transform duration-200",
-            isOpen && "rotate-180 text-brand-400"
-          )}
-        />
-      </button>
+        {label && (
+          <label
+            htmlFor={selectId}
+            className="text-sm font-medium text-slate-200 select-none"
+          >
+            {label}
+          </label>
+        )}
 
-      {/* Floating Rounded-Rectangle Popover Menu (Brought to Front with Elevated Stacking Context) */}
-      {isOpen && (
-        <div
-          role="listbox"
-          tabIndex={0}
-          onKeyDown={handleMenuKeyDown}
+        <button
+          ref={triggerRef}
+          id={selectId}
+          type="button"
+          disabled={disabled}
+          onClick={() => !disabled && setIsOpen(!isOpen)}
+          onKeyDown={handleTriggerKeyDown}
+          aria-haspopup="listbox"
+          aria-expanded={isOpen}
           className={cn(
-            "absolute top-full mt-2 z-50",
-            align === "right" ? "right-0" : "left-0",
-            "w-full min-w-full sm:min-w-[280px] max-w-[90vw]",
-            "rounded-2xl p-2 max-h-72 overflow-y-auto",
-            "bg-slate-900/98 backdrop-blur-2xl border border-white/20",
-            "shadow-[0_20px_50px_rgba(0,0,0,0.95)] ring-1 ring-white/10 space-y-1 animate-in fade-in zoom-in-95 duration-150",
-            menuClassName
+            "w-full rounded-xl px-3.5 py-2.5 text-xs text-left",
+            "bg-slate-900/90 border border-white/10 hover:border-white/20 hover:bg-slate-900",
+            "text-slate-100 flex items-center justify-between gap-2",
+            "focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500/60",
+            "transition-all duration-200 select-none shadow-sm",
+            disabled && "opacity-50 cursor-not-allowed",
+            isOpen && "ring-2 ring-brand-500/50 border-brand-500/60 bg-slate-900",
+            error && "border-red-500/60 focus:ring-red-500/40",
+            triggerClassName
           )}
         >
-          {options.map((option) => {
-            const isSelected = option.value === value;
-            return (
-              <button
-                key={option.value}
-                type="button"
-                role="option"
-                aria-selected={isSelected}
-                onClick={() => handleSelect(option.value)}
-                className={cn(
-                  "w-full rounded-xl px-3 py-2 text-xs text-left flex items-center justify-between gap-2",
-                  "transition-all duration-150 select-none cursor-pointer",
-                  isSelected
-                    ? "bg-brand-500/20 text-brand-200 border border-brand-500/30 font-semibold"
-                    : "text-slate-300 hover:text-white hover:bg-white/10 border border-transparent"
-                )}
-              >
-                <div className="flex flex-col gap-0.5 truncate">
-                  <span className="truncate">{option.label}</span>
-                  {option.description && (
-                    <span className="text-[11px] text-slate-400 font-normal truncate">
-                      {option.description}
-                    </span>
-                  )}
-                </div>
+          <span className={cn("truncate", !selectedOption && "text-slate-500")}>
+            {selectedOption ? selectedOption.label : placeholder}
+          </span>
+          <ChevronDown
+            className={cn(
+              "w-4 h-4 text-slate-400 shrink-0 transition-transform duration-200",
+              isOpen && "rotate-180 text-brand-400"
+            )}
+          />
+        </button>
 
-                <div className="flex items-center gap-1.5 shrink-0 ml-2">
-                  {option.badge && (
-                    <span className="text-[10px] px-1.5 py-0.5 rounded-lg bg-teal-500/20 text-teal-300 border border-teal-500/30 font-medium">
-                      {option.badge}
-                    </span>
-                  )}
-                  {isSelected && (
-                    <Check className="w-3.5 h-3.5 text-brand-400 shrink-0" />
-                  )}
-                </div>
-              </button>
-            );
-          })}
-        </div>
-      )}
+        {error && (
+          <p className="text-xs text-red-400 mt-0.5" role="alert">
+            {error}
+          </p>
+        )}
+        {hint && !error && (
+          <p className="text-xs text-slate-500 mt-0.5">{hint}</p>
+        )}
+      </div>
 
-      {error && (
-        <p className="text-xs text-red-400 mt-0.5" role="alert">
-          {error}
-        </p>
-      )}
-      {hint && !error && (
-        <p className="text-xs text-slate-500 mt-0.5">
-          {hint}
-        </p>
-      )}
-    </div>
+      {/* Portal menu — rendered on document.body, z-index 99999, immune to all stacking contexts */}
+      {portalMenu}
+    </>
   );
 }
