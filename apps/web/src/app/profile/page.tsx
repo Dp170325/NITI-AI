@@ -8,7 +8,7 @@ import { useProfileStore } from "@/lib/profileStore";
 import { getRecommendedSchemes } from "@/lib/eligibilityEngine";
 import { LocationPicker } from "@/components/onboarding/LocationPicker";
 import { UserMenu } from "@/components/auth/UserMenu";
-import { BorderBeamCard, MetalButton } from "@/components/effects/InteractiveEffects";
+import { BorderBeamCard } from "@/components/effects/InteractiveEffects";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Card, CardHeader, CardContent } from "@/components/ui/Card";
@@ -100,12 +100,15 @@ export default function UserProfilePage() {
                   AI Advisor
                 </Button>
               </Link>
-              <MetalButton preset="chromatic" strength={1} onClick={handleSaveAll}>
-                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900 text-teal-300 text-xs font-semibold border border-teal-500/30">
-                  <Save className="w-3.5 h-3.5 text-teal-400" />
-                  {isSaving ? "Saving..." : "Save Profile"}
-                </span>
-              </MetalButton>
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={handleSaveAll}
+                loading={isSaving}
+                leftIcon={<Save className="w-3.5 h-3.5" />}
+              >
+                {isSaving ? "Saving..." : "Save Profile"}
+              </Button>
               <div className="h-4 w-px bg-white/10 hidden sm:block" />
               <UserMenu />
             </div>

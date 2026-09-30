@@ -1,19 +1,12 @@
 "use client";
 
 import { useMemo, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { AuthGuard } from "@/components/auth/AuthGuard";
 import { useAuthStore } from "@/lib/authStore";
 import { useProfileStore } from "@/lib/profileStore";
 import { getRecommendedSchemes } from "@/lib/eligibilityEngine";
 import { UserMenu } from "@/components/auth/UserMenu";
-import { 
-  BorderBeamCard, 
-  LiveThinkingOrb, 
-  LiquidActions, 
-  MetalButton, 
-  MetalStatusBadge 
-} from "@/components/effects/InteractiveEffects";
+import { BorderBeamCard, LiveThinkingOrb } from "@/components/effects/InteractiveEffects";
 import { Button } from "@/components/ui/Button";
 import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/Card";
 import Link from "next/link";
@@ -33,7 +26,6 @@ import {
 } from "lucide-react";
 
 export default function DashboardPage() {
-  const router = useRouter();
   const { user } = useAuthStore();
   const { profile, loadProfile } = useProfileStore();
 
@@ -113,14 +105,13 @@ export default function DashboardPage() {
                     </Button>
                   </Link>
 
-                  {/* Metal-FX Liquid Shimmer Action Button */}
                   <Link href="/chat">
-                    <MetalButton preset="chromatic" strength={1}>
-                      <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-900 text-teal-300 text-sm font-semibold border border-teal-500/40 shadow-glow-sm">
-                        <Sparkles className="w-4 h-4 text-teal-400" />
-                        Consult AI Advisor
-                      </span>
-                    </MetalButton>
+                    <Button
+                      variant="secondary"
+                      leftIcon={<Sparkles className="w-4 h-4 text-teal-400" />}
+                    >
+                      Consult AI Advisor
+                    </Button>
                   </Link>
 
                   <Link href="/schemes">
@@ -128,11 +119,6 @@ export default function DashboardPage() {
                       Browse All Schemes
                     </Button>
                   </Link>
-
-                  {/* Liquid Gooey Interactive Action Dock */}
-                  <div className="hidden sm:block ml-2">
-                    <LiquidActions onActionSelect={(act) => router.push(act === "chat" ? "/chat" : "/profile")} />
-                  </div>
                 </div>
               </div>
             </div>
@@ -229,7 +215,9 @@ export default function DashboardPage() {
 
                         <div className="flex items-center gap-1.5">
                           {index === 0 && (
-                            <MetalStatusBadge label="Top Recommendation" />
+                            <span className="text-2xs font-semibold px-2.5 py-0.5 rounded-full bg-gradient-to-r from-brand-500/20 to-teal-500/20 text-brand-300 border border-brand-500/40 shadow-glow-sm">
+                              Top Recommendation
+                            </span>
                           )}
                           <span className="text-2xs uppercase tracking-wider font-semibold px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-white/10">
                             {scheme.governmentLevel}

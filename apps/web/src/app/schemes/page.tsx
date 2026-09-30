@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { SCHEMES_DATABASE } from "@/lib/schemesData";
 import { UserMenu } from "@/components/auth/UserMenu";
-import { BorderBeamCard, MetalButton, LiveThinkingOrb } from "@/components/effects/InteractiveEffects";
+import { BorderBeamCard, LiveThinkingOrb } from "@/components/effects/InteractiveEffects";
 import { InfrastructureStatusModal } from "@/components/infrastructure/InfrastructureStatusModal";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
@@ -105,12 +105,9 @@ export default function SchemesExplorerPage() {
               </Button>
             </Link>
             <Link href="/chat">
-              <MetalButton preset="chromatic" strength={1}>
-                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900 text-teal-300 text-xs font-semibold border border-teal-500/30">
-                  <Sparkles className="w-3.5 h-3.5 text-teal-400" />
-                  Ask NITI Saathi
-                </span>
-              </MetalButton>
+              <Button variant="primary" size="sm" rightIcon={<Sparkles className="w-3.5 h-3.5" />}>
+                Ask NITI Saathi
+              </Button>
             </Link>
             <div className="h-4 w-px bg-white/10 hidden sm:block" />
             <UserMenu />
