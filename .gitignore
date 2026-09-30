@@ -16,3 +16,6 @@ dist/
 Implementation_Phases/
 Implementation_Phases/*.pdf
 *.tsbuildinfo
+.open-next/
+.wrangler/
+.dev.vars

@@ -10,6 +10,9 @@ import {
 } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { auth, db, googleProvider, appleProvider, formatFirebaseAuthError } from "@/lib/firebase";
+
+const FIREBASE_UNCONFIGURED =
+  "Firebase is not configured for this environment. Add NEXT_PUBLIC_FIREBASE_API_KEY to the Cloudflare build variables (same value as the GitHub secret).";
 import { useProfileStore } from "@/lib/profileStore";
 import { UserAccount } from "@niti-ai/types";
 
@@ -52,6 +55,11 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       }
     }
 
+    if (!auth) {
+      set({ isLoading: false, error: null });
+      return () => {};
+    }
+
     const unsubscribe = onAuthStateChanged(auth, async (fbUser) => {
       if (fbUser) {
         // Read onboarding flag from localStorage if available
@@ -61,6 +69,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
         // Check Cloud Firestore for existing user profile & onboarding status
         try {
+          if (!db) throw new Error("Firestore unavailable");
           const userDoc = doc(db, "users", fbUser.uid);
           const snap = await getDoc(userDoc);
           if (snap.exists()) {
@@ -91,6 +100,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
         // Sync user record to Firestore database
         try {
+          if (!db) throw new Error("Firestore unavailable");
           const userDoc = doc(db, "users", fbUser.uid);
           setDoc(userDoc, {
             uid: account.uid,
@@ -121,6 +131,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   signInWithGoogle: async () => {
     set({ isLoading: true, error: null });
     try {
+      if (!auth) throw new Error(FIREBASE_UNCONFIGURED);
       await signInWithPopup(auth, googleProvider);
     } catch (err: unknown) {
       const message = formatFirebaseAuthError(err);
@@ -132,6 +143,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   signInWithApple: async () => {
     set({ isLoading: true, error: null });
     try {
+      if (!auth) throw new Error(FIREBASE_UNCONFIGURED);
       await signInWithPopup(auth, appleProvider);
     } catch (err: unknown) {
       const message = formatFirebaseAuthError(err);
@@ -143,6 +155,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   signInWithEmail: async (email: string, pass: string) => {
     set({ isLoading: true, error: null });
     try {
+      if (!auth) throw new Error(FIREBASE_UNCONFIGURED);
       await signInWithEmailAndPassword(auth, email, pass);
     } catch (err: unknown) {
       const errCode = (err as { code?: string })?.code;
@@ -175,11 +188,13 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   signUpWithEmail: async (name: string, email: string, pass: string) => {
     set({ isLoading: true, error: null });
     try {
+      if (!auth) throw new Error(FIREBASE_UNCONFIGURED);
       const cred = await createUserWithEmailAndPassword(auth, email, pass);
       if (cred.user) {
         await updateProfile(cred.user, { displayName: name });
         // Create initial user document in Firestore database
         try {
+          if (!db) throw new Error("Firestore unavailable");
           await setDoc(doc(db, "users", cred.user.uid), {
             uid: cred.user.uid,
             email,
@@ -248,7 +263,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         localStorage.removeItem("niti_demo_session");
         localStorage.removeItem("onboarded_demo-entrepreneur-id");
       }
-      await firebaseSignOut(auth);
+      if (auth) {
+        await firebaseSignOut(auth);
+      }
       useProfileStore.getState().reset();
       set({ user: null, firebaseUser: null, isLoading: false, error: null });
     } catch (err: unknown) {

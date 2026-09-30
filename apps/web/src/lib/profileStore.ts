@@ -119,6 +119,7 @@ export const useProfileStore = create<ProfileState>((set, get) => ({
 
     // 2. Persist to Cloud Firestore database
     try {
+      if (!db) throw new Error("Firestore unavailable");
       const userDocRef = doc(db, "users", userId);
       setDoc(userDocRef, {
         profile: finalProfile,
@@ -151,6 +152,7 @@ export const useProfileStore = create<ProfileState>((set, get) => ({
 
     // Fetch latest from Cloud Firestore
     try {
+      if (!db) throw new Error("Firestore unavailable");
       const userDocRef = doc(db, "users", userId);
       const snapshot = await getDoc(userDocRef);
       if (snapshot.exists()) {
