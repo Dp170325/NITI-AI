@@ -15,7 +15,8 @@
     "lint": "pnpm --filter @niti-ai/web lint",
     "typecheck": "pnpm -r typecheck",
     "test": "pnpm --filter @niti-ai/web test",
-    "clean": "pnpm -r clean"
+    "clean": "pnpm -r clean",
+    "deploy:firebase": "firebase deploy --only hosting"
   },
   "devDependencies": {
     "@cloudflare/next-on-pages": "^1.13.16",
