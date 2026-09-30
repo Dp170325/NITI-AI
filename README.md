@@ -64,16 +64,7 @@ cp .env.example apps/web/.env.local
 
 ### Running Locally
 
-```bash
-# Start Next.js development server
-pnpm dev
 
-# Build all packages & export static application
-pnpm run build
-
-# Run TypeScript checks across packages
-pnpm -r typecheck
-```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to explore NITI AI.
 
