@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/lib/authStore";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-import { Sparkles, Mail, Lock, User, AlertCircle, ArrowRight, ShieldCheck } from "lucide-react";
+import { Sparkles, Mail, Lock, User, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
 import { AppleLogoIcon, GoogleLogoIcon } from "@/components/ui/BrandIcons";
 
@@ -18,7 +18,7 @@ export default function SignUpPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
-  const { user, signInWithGoogle, signInWithApple, signUpWithEmail, signInAsDemoUser, error, clearError } = useAuthStore();
+  const { user, signInWithGoogle, signInWithApple, signUpWithEmail, error, clearError } = useAuthStore();
 
   // If user is already logged in, redirect directly to dashboard or onboarding
   useEffect(() => {
@@ -88,12 +88,6 @@ export default function SignUpPage() {
     }
   };
 
-  const handleDemoSignUp = () => {
-    signInAsDemoUser();
-    toast.success("Welcome, Aditi Sharma! Demo entrepreneur profile loaded.");
-    router.replace("/dashboard");
-  };
-
   return (
     <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden bg-slate-950">
       <div className="pointer-events-none fixed inset-0 z-0">
@@ -111,29 +105,6 @@ export default function SignUpPage() {
           </Link>
           <h1 className="text-2xl font-bold text-slate-100">Create Account</h1>
           <p className="text-xs text-slate-400 mt-1">Empower your enterprise with AI government scheme intelligence</p>
-        </div>
-
-        {/* 1-Click Instant Demo Login for Hackathon / Evaluators */}
-        <div className="mb-5 p-3 rounded-2xl bg-gradient-to-r from-brand-500/15 via-teal-500/10 to-brand-500/15 border border-brand-500/30">
-          <div className="flex items-center justify-between gap-2 mb-1.5">
-            <span className="text-xs font-semibold text-brand-300 flex items-center gap-1.5">
-              <ShieldCheck className="w-4 h-4 text-brand-400" />
-              Instant Evaluator Access
-            </span>
-            <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded-lg bg-brand-500/20 text-brand-300 border border-brand-500/30">
-              Skip Signup
-            </span>
-          </div>
-          <Button
-            type="button"
-            variant="primary"
-            fullWidth
-            size="sm"
-            onClick={handleDemoSignUp}
-            rightIcon={<ArrowRight className="w-3.5 h-3.5" />}
-          >
-            Enter with Pre-configured Demo Profile
-          </Button>
         </div>
 
         <div className="flex flex-col gap-2.5 mb-4">

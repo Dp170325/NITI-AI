@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useAuthStore } from "@/lib/authStore";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-import { Sparkles, Mail, Lock, AlertCircle, ArrowRight, ShieldCheck, Loader2 } from "lucide-react";
+import { Sparkles, Mail, Lock, AlertCircle, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { AppleLogoIcon, GoogleLogoIcon } from "@/components/ui/BrandIcons";
 
@@ -19,7 +19,7 @@ function SignInForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
-  const { user, signInWithGoogle, signInWithApple, signInWithEmail, signInAsDemoUser, error, clearError } = useAuthStore();
+  const { user, signInWithGoogle, signInWithApple, signInWithEmail, error, clearError } = useAuthStore();
 
   // If user is already logged in, redirect directly to dashboard or onboarding
   useEffect(() => {
@@ -75,11 +75,6 @@ function SignInForm() {
     }
   };
 
-  const handleDemoSignIn = () => {
-    signInAsDemoUser();
-    toast.success("Welcome, Aditi Sharma! Instant Demo access enabled.");
-    router.replace("/dashboard");
-  };
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden bg-slate-950">
@@ -100,31 +95,6 @@ function SignInForm() {
           <p className="text-xs text-slate-400 mt-1">Access your personalized government scheme & subsidy dashboard</p>
         </div>
 
-        {/* 1-Click Instant Demo Login for Hackathon / Evaluators */}
-        <div className="mb-5 p-3 rounded-2xl bg-gradient-to-r from-brand-500/15 via-teal-500/10 to-brand-500/15 border border-brand-500/30">
-          <div className="flex items-center justify-between gap-2 mb-1.5">
-            <span className="text-xs font-semibold text-brand-300 flex items-center gap-1.5">
-              <ShieldCheck className="w-4 h-4 text-brand-400" />
-              SIH Evaluator Quick Access
-            </span>
-            <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded-lg bg-brand-500/20 text-brand-300 border border-brand-500/30">
-              1-Click
-            </span>
-          </div>
-          <p className="text-[11px] text-slate-300 mb-2 leading-relaxed">
-            Test the entire scheme engine, onboarding flow, and multilingual AI immediately:
-          </p>
-          <Button
-            type="button"
-            variant="primary"
-            fullWidth
-            size="sm"
-            onClick={handleDemoSignIn}
-            rightIcon={<ArrowRight className="w-3.5 h-3.5" />}
-          >
-            Launch as Demo Entrepreneur (Aditi Sharma)
-          </Button>
-        </div>
 
         {/* Social Logins */}
         <div className="flex flex-col gap-2.5 mb-4">
