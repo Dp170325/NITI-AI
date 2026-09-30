@@ -46,7 +46,7 @@ export function InfrastructureStatusModal() {
           refresh();
           setIsOpen(true);
         }}
-        className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium bg-slate-900/80 hover:bg-slate-800 border border-teal-500/30 text-teal-300 transition-colors shadow-sm"
+        className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-medium bg-slate-900/80 hover:bg-slate-800 border border-teal-500/30 text-teal-300 transition-colors shadow-sm"
       >
         <span className="w-2 h-2 rounded-full bg-teal-400 animate-pulse" />
         <span>Infrastructure: All Systems Healthy</span>
@@ -66,7 +66,7 @@ export function InfrastructureStatusModal() {
                 <div>
                   <h2 className="text-xl font-bold text-slate-100 flex items-center gap-2">
                     System Architecture & Telemetry
-                    <span className="text-2xs font-mono px-2 py-0.5 rounded-full bg-teal-500/20 text-teal-300 border border-teal-500/30">
+                    <span className="text-2xs font-mono px-2 py-0.5 rounded-lg bg-teal-500/20 text-teal-300 border border-teal-500/30">
                       LIVE
                     </span>
                   </h2>

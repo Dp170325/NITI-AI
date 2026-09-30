@@ -141,7 +141,7 @@ export function UserMenu({ showInfrastructureOption = true }: UserMenuProps) {
                 <p className="text-xs text-slate-400 truncate font-mono mt-0.5" title={email}>
                   {email}
                 </p>
-                <div className="inline-flex items-center gap-1 text-[10px] font-semibold text-brand-300 bg-brand-500/15 border border-brand-500/25 px-2 py-0.5 rounded-full mt-1.5">
+                <div className="inline-flex items-center gap-1 text-[10px] font-semibold text-brand-300 bg-brand-500/15 border border-brand-500/25 px-2 py-0.5 rounded-lg mt-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-teal-400" />
                   Verified Entrepreneur
                 </div>

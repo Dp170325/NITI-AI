@@ -88,7 +88,7 @@ export default function DashboardPage() {
           <BorderBeamCard size="md" colorVariant="ocean" strength={0.7} className="rounded-3xl">
             <div className="glass-card rounded-3xl p-8 relative overflow-hidden border-brand-500/20">
               <div className="max-w-3xl relative z-10">
-                <div className="inline-flex items-center gap-2.5 glass-card rounded-full px-3.5 py-1 text-xs text-brand-300 font-medium mb-3 border-brand-500/20">
+                <div className="inline-flex items-center gap-2.5 glass-card rounded-xl px-3.5 py-1 text-xs text-brand-300 font-medium mb-3 border-brand-500/20">
                   <LiveThinkingOrb state="breathing" size={20} theme="dark" />
                   <span>Live Entrepreneur Intelligence Engine</span>
                 </div>
@@ -203,7 +203,7 @@ export default function DashboardPage() {
                   <Card glass hover className="flex flex-col justify-between h-full">
                     <CardHeader>
                       <div className="flex items-center justify-between gap-2 mb-2">
-                        <span className={`text-xs font-semibold px-2.5 py-0.5 rounded-full border ${
+                        <span className={`text-xs font-semibold px-2.5 py-0.5 rounded-lg border ${
                           matchScore >= 80 
                             ? "bg-teal-500/15 text-teal-300 border-teal-500/30" 
                             : matchScore >= 60 
@@ -215,15 +215,15 @@ export default function DashboardPage() {
 
                         <div className="flex items-center gap-1.5">
                           {index === 0 && (
-                            <span className="text-2xs font-semibold px-2.5 py-0.5 rounded-full bg-gradient-to-r from-brand-500/20 to-teal-500/20 text-brand-300 border border-brand-500/40 shadow-glow-sm">
+                            <span className="text-2xs font-semibold px-2.5 py-0.5 rounded-lg bg-gradient-to-r from-brand-500/20 to-teal-500/20 text-brand-300 border border-brand-500/40 shadow-glow-sm">
                               Top Recommendation
                             </span>
                           )}
-                          <span className="text-2xs uppercase tracking-wider font-semibold px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-white/10">
+                          <span className="text-2xs uppercase tracking-wider font-semibold px-2 py-0.5 rounded-lg bg-slate-800 text-slate-300 border border-white/10">
                             {scheme.governmentLevel}
                           </span>
                           {scheme.subsidyPercentage && (
-                            <span className="text-2xs font-semibold px-2 py-0.5 rounded-full bg-brand-500/15 text-brand-300 border border-brand-500/30">
+                            <span className="text-2xs font-semibold px-2 py-0.5 rounded-lg bg-brand-500/15 text-brand-300 border border-brand-500/30">
                               {scheme.subsidyPercentage}% Subsidy
                             </span>
                           )}
@@ -346,14 +346,14 @@ export default function DashboardPage() {
                     <Sparkles className="w-5 h-5 text-brand-400" />
                     AI Action Plan & Instant Next Steps
                   </h3>
-                  <span className="text-2xs font-semibold px-2.5 py-0.5 rounded-full bg-brand-500/15 text-brand-300 border border-brand-500/30">
+                  <span className="text-2xs font-semibold px-2.5 py-0.5 rounded-lg bg-brand-500/15 text-brand-300 border border-brand-500/30">
                     NITI Saathi Roadmap
                   </span>
                 </div>
               </CardHeader>
               <CardContent className="space-y-3.5 text-sm">
                 <div className="flex items-start gap-3 p-3 rounded-2xl bg-white/[0.03] border border-white/5">
-                  <span className="w-6 h-6 rounded-full bg-teal-500/20 text-teal-300 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
+                  <span className="w-6 h-6 rounded-lg bg-teal-500/20 text-teal-300 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
                     1
                   </span>
                   <div>
@@ -365,7 +365,7 @@ export default function DashboardPage() {
                 </div>
 
                 <div className="flex items-start gap-3 p-3 rounded-2xl bg-white/[0.03] border border-white/5">
-                  <span className="w-6 h-6 rounded-full bg-brand-500/20 text-brand-300 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
+                  <span className="w-6 h-6 rounded-lg bg-brand-500/20 text-brand-300 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
                     2
                   </span>
                   <div>
@@ -377,7 +377,7 @@ export default function DashboardPage() {
                 </div>
 
                 <div className="flex items-start gap-3 p-3 rounded-2xl bg-white/[0.03] border border-white/5">
-                  <span className="w-6 h-6 rounded-full bg-purple-500/20 text-purple-300 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
+                  <span className="w-6 h-6 rounded-lg bg-purple-500/20 text-purple-300 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
                     3
                   </span>
                   <div>

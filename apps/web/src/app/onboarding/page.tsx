@@ -8,6 +8,16 @@ import { AuthGuard } from "@/components/auth/AuthGuard";
 import { LocationPicker } from "@/components/onboarding/LocationPicker";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
+import { Select } from "@/components/ui/Select";
+import {
+  GENDER_OPTIONS,
+  SOCIAL_CATEGORY_OPTIONS,
+  AREA_TYPE_OPTIONS,
+  LANGUAGE_OPTIONS,
+  BUSINESS_STAGE_OPTIONS,
+  ENTERPRISE_TYPE_OPTIONS,
+  FUNDING_PURPOSE_OPTIONS
+} from "@/lib/profileConstants";
 import { 
   User, 
   Building2, 
@@ -150,36 +160,19 @@ export default function OnboardingPage() {
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="text-sm font-medium text-slate-200 block mb-1.5">
-                        Gender (Relevant for specific women entrepreneur schemes)
-                      </label>
-                      <select
-                        value={profile.gender || "prefer_not_to_say"}
-                        onChange={(e) => updatePersonal({ gender: e.target.value as EntrepreneurProfile["gender"] })}
-                        className="w-full rounded-xl px-4 py-2.5 text-sm bg-slate-900 border border-white/10 text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500/50"
-                      >
-                        <option value="female">Female</option>
-                        <option value="male">Male</option>
-                        <option value="transgender">Transgender</option>
-                        <option value="prefer_not_to_say">Prefer not to say</option>
-                      </select>
-                    </div>
+                    <Select
+                      label="Gender (Relevant for specific women entrepreneur schemes)"
+                      value={profile.gender || "prefer_not_to_say"}
+                      onChange={(val) => updatePersonal({ gender: val as EntrepreneurProfile["gender"] })}
+                      options={GENDER_OPTIONS}
+                    />
 
-                    <div>
-                      <label className="text-sm font-medium text-slate-200 block mb-1.5">
-                        Area Type
-                      </label>
-                      <select
-                        value={profile.areaType || "urban"}
-                        onChange={(e) => updatePersonal({ areaType: e.target.value as AreaType })}
-                        className="w-full rounded-xl px-4 py-2.5 text-sm bg-slate-900 border border-white/10 text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500/50"
-                      >
-                        <option value="urban">Urban</option>
-                        <option value="rural">Rural (eligible for PMEGP rural subsidy)</option>
-                        <option value="semi-urban">Semi-Urban</option>
-                      </select>
-                    </div>
+                    <Select
+                      label="Area Type"
+                      value={profile.areaType || "urban"}
+                      onChange={(val) => updatePersonal({ areaType: val as AreaType })}
+                      options={AREA_TYPE_OPTIONS}
+                    />
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -198,38 +191,19 @@ export default function OnboardingPage() {
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="text-sm font-medium text-slate-200 block mb-1.5">
-                        Social Category (Optional – used for affirmative schemes)
-                      </label>
-                      <select
-                        value={profile.socialCategory || "general"}
-                        onChange={(e) => updatePersonal({ socialCategory: e.target.value as SocialCategory })}
-                        className="w-full rounded-xl px-4 py-2.5 text-sm bg-slate-900 border border-white/10 text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500/50"
-                      >
-                        <option value="general">General</option>
-                        <option value="obc">OBC</option>
-                        <option value="sc">SC</option>
-                        <option value="st">ST</option>
-                        <option value="minority">Minority</option>
-                        <option value="ews">EWS</option>
-                      </select>
-                    </div>
+                    <Select
+                      label="Social Category (Optional – used for affirmative schemes)"
+                      value={profile.socialCategory || "general"}
+                      onChange={(val) => updatePersonal({ socialCategory: val as SocialCategory })}
+                      options={SOCIAL_CATEGORY_OPTIONS}
+                    />
 
-                    <div>
-                      <label className="text-sm font-medium text-slate-200 block mb-1.5">
-                        Preferred Language for AI Assistant
-                      </label>
-                      <select
-                        value={profile.preferredLanguage || "en"}
-                        onChange={(e) => updatePersonal({ preferredLanguage: e.target.value as SupportedLanguage })}
-                        className="w-full rounded-xl px-4 py-2.5 text-sm bg-slate-900 border border-white/10 text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500/50"
-                      >
-                        <option value="en">English</option>
-                        <option value="hi">हिंदी (Hindi)</option>
-                        <option value="hinglish">Hinglish (Hindi in English letters)</option>
-                      </select>
-                    </div>
+                    <Select
+                      label="Preferred Language for AI Assistant"
+                      value={profile.preferredLanguage || "en"}
+                      onChange={(val) => updatePersonal({ preferredLanguage: val as SupportedLanguage })}
+                      options={LANGUAGE_OPTIONS}
+                    />
                   </div>
                 </motion.div>
               )}
@@ -255,21 +229,12 @@ export default function OnboardingPage() {
                       onChange={(e) => updateBusiness({ businessName: e.target.value })}
                       required
                     />
-                    <div>
-                      <label className="text-sm font-medium text-slate-200 block mb-1.5">
-                        Business Stage
-                      </label>
-                      <select
-                        value={profile.businessStage || "starting"}
-                        onChange={(e) => updateBusiness({ businessStage: e.target.value as BusinessStage })}
-                        className="w-full rounded-xl px-4 py-2.5 text-sm bg-slate-900 border border-white/10 text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500/50"
-                      >
-                        <option value="idea">Idea Stage</option>
-                        <option value="starting">Starting New Business (0-1 year)</option>
-                        <option value="existing">Existing Established Business</option>
-                        <option value="expansion">Scale-Up / Expansion</option>
-                      </select>
-                    </div>
+                    <Select
+                      label="Business Stage"
+                      value={profile.businessStage || "starting"}
+                      onChange={(val) => updateBusiness({ businessStage: val as BusinessStage })}
+                      options={BUSINESS_STAGE_OPTIONS}
+                    />
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -290,20 +255,12 @@ export default function OnboardingPage() {
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div>
-                      <label className="text-sm font-medium text-slate-200 block mb-1.5">
-                        Enterprise Type
-                      </label>
-                      <select
-                        value={profile.enterpriseType || "micro"}
-                        onChange={(e) => updateBusiness({ enterpriseType: e.target.value as EnterpriseType })}
-                        className="w-full rounded-xl px-4 py-2.5 text-sm bg-slate-900 border border-white/10 text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500/50"
-                      >
-                        <option value="micro">Micro (&lt; ₹1 Cr investment)</option>
-                        <option value="small">Small (&lt; ₹10 Cr)</option>
-                        <option value="medium">Medium (&lt; ₹50 Cr)</option>
-                      </select>
-                    </div>
+                    <Select
+                      label="Enterprise Type"
+                      value={profile.enterpriseType || "micro"}
+                      onChange={(val) => updateBusiness({ enterpriseType: val as EnterpriseType })}
+                      options={ENTERPRISE_TYPE_OPTIONS}
+                    />
                     <Input
                       label="Number of Employees"
                       type="number"
@@ -342,23 +299,12 @@ export default function OnboardingPage() {
                       onChange={(e) => updateFunding({ fundingRequired: Number(e.target.value) })}
                       required
                     />
-                    <div>
-                      <label className="text-sm font-medium text-slate-200 block mb-1.5">
-                        Primary Purpose of Funds
-                      </label>
-                      <select
-                        value={profile.fundingPurpose || "machinery"}
-                        onChange={(e) => updateFunding({ fundingPurpose: e.target.value as EntrepreneurProfile["fundingPurpose"] })}
-                        className="w-full rounded-xl px-4 py-2.5 text-sm bg-slate-900 border border-white/10 text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500/50"
-                      >
-                        <option value="machinery">Equipment & Machinery Purchase</option>
-                        <option value="working_capital">Working Capital & Inventory</option>
-                        <option value="expansion">Business Expansion / New Unit</option>
-                        <option value="technology">Technology & Digital Adoption</option>
-                        <option value="marketing">Marketing & Export Development</option>
-                        <option value="other">General Operational Assistance</option>
-                      </select>
-                    </div>
+                    <Select
+                      label="Primary Purpose of Funds"
+                      value={profile.fundingPurpose || "machinery"}
+                      onChange={(val) => updateFunding({ fundingPurpose: val as EntrepreneurProfile["fundingPurpose"] })}
+                      options={FUNDING_PURPOSE_OPTIONS}
+                    />
                   </div>
 
                   <div className="pt-2">

@@ -107,7 +107,7 @@ function SignInForm() {
               <ShieldCheck className="w-4 h-4 text-brand-400" />
               SIH Evaluator Quick Access
             </span>
-            <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded-full bg-brand-500/20 text-brand-300 border border-brand-500/30">
+            <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded-lg bg-brand-500/20 text-brand-300 border border-brand-500/30">
               1-Click
             </span>
           </div>

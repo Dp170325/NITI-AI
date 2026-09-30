@@ -141,7 +141,7 @@ Conversation refreshed. What scheme, loan, or subsidy would you like to explore 
                     NITI Saathi (नीति साथी)
                   </h1>
                   <LiveThinkingOrb state="breathing" size={20} theme="dark" />
-                  <span className="text-[10px] font-semibold px-2.5 py-0.5 rounded-full bg-teal-500/15 text-teal-300 border border-teal-500/30">
+                  <span className="text-[10px] font-semibold px-2.5 py-0.5 rounded-lg bg-teal-500/15 text-teal-300 border border-teal-500/30">
                     ChatGPT-Style Human Mentor
                   </span>
                 </div>
@@ -246,7 +246,7 @@ Conversation refreshed. What scheme, loan, or subsidy would you like to explore 
                           key={i}
                           type="button"
                           onClick={() => handleSendMessage(sug)}
-                          className="text-xs px-4 py-2 rounded-full bg-brand-500/10 hover:bg-brand-500/20 text-brand-300 border border-brand-500/30 transition-all duration-150 text-left hover:scale-[1.01] hover:border-brand-400 shadow-sm"
+                          className="text-xs px-4 py-2 rounded-xl bg-brand-500/10 hover:bg-brand-500/20 text-brand-300 border border-brand-500/30 transition-all duration-150 text-left hover:scale-[1.01] hover:border-brand-400 shadow-sm"
                         >
                           {sug}
                         </button>

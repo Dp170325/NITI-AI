@@ -8,6 +8,7 @@ import { BorderBeamCard, LiveThinkingOrb } from "@/components/effects/Interactiv
 import { InfrastructureStatusModal } from "@/components/infrastructure/InfrastructureStatusModal";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
+import { Select } from "@/components/ui/Select";
 import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/Card";
 import { 
   Sparkles, 
@@ -24,6 +25,30 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { SchemeDetail } from "@niti-ai/types";
+
+const JURISDICTION_OPTIONS = [
+  { value: "all", label: "All Jurisdictions" },
+  { value: "central", label: "Central Schemes (Nationwide)" },
+  { value: "state", label: "State Policies (MP, Maha, UP, TN, KA)" },
+];
+
+const CATEGORY_OPTIONS = [
+  { value: "all", label: "All Categories" },
+  { value: "subsidy", label: "High Capital Subsidy (≥25%)" },
+  { value: "credit_guarantee", label: "Collateral-Free / Credit Guarantee" },
+  { value: "women_scst", label: "Women & SC/ST Priority" },
+  { value: "startups", label: "Startup Innovation Grants" },
+  { value: "artisans", label: "Artisans & Traditional Crafts" },
+];
+
+const PORTAL_OPTIONS = [
+  { value: "all", label: "All Aggregated Portals" },
+  { value: "JanSamarth", label: "JanSamarth Portal" },
+  { value: "Startup India", label: "Startup India Official" },
+  { value: "Vishwakarma", label: "PM Vishwakarma Portal" },
+  { value: "MoFPI", label: "MoFPI Food Processing" },
+  { value: "State", label: "State MSME Single Windows" },
+];
 
 export default function SchemesExplorerPage() {
   const [search, setSearch] = useState("");
@@ -197,43 +222,28 @@ export default function SchemesExplorerPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 w-full md:w-auto">
             {/* Jurisdiction */}
-            <select
+            <Select
               value={selectedLevel}
-              onChange={(e) => setSelectedLevel(e.target.value)}
-              className="rounded-xl px-3 py-2 text-xs bg-slate-900 border border-white/10 text-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500/50"
-            >
-              <option value="all">All Jurisdictions</option>
-              <option value="central">Central Schemes (Nationwide)</option>
-              <option value="state">State Policies (MP, Maha, UP, TN, KA)</option>
-            </select>
+              onChange={setSelectedLevel}
+              options={JURISDICTION_OPTIONS}
+              triggerClassName="py-2"
+            />
 
             {/* Category */}
-            <select
+            <Select
               value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
-              className="rounded-xl px-3 py-2 text-xs bg-slate-900 border border-white/10 text-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500/50"
-            >
-              <option value="all">All Categories</option>
-              <option value="subsidy">High Capital Subsidy (≥25%)</option>
-              <option value="credit_guarantee">Collateral-Free / Credit Guarantee</option>
-              <option value="women_scst">Women & SC/ST Priority</option>
-              <option value="startups">Startup Innovation Grants</option>
-              <option value="artisans">Artisans & Traditional Crafts</option>
-            </select>
+              onChange={setSelectedCategory}
+              options={CATEGORY_OPTIONS}
+              triggerClassName="py-2"
+            />
 
             {/* Portal Source */}
-            <select
+            <Select
               value={selectedPortal}
-              onChange={(e) => setSelectedPortal(e.target.value)}
-              className="rounded-xl px-3 py-2 text-xs bg-slate-900 border border-white/10 text-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500/50"
-            >
-              <option value="all">All Aggregated Portals</option>
-              <option value="JanSamarth">JanSamarth Portal</option>
-              <option value="Startup India">Startup India Official</option>
-              <option value="Vishwakarma">PM Vishwakarma Portal</option>
-              <option value="MoFPI">MoFPI Food Processing</option>
-              <option value="State">State MSME Single Windows</option>
-            </select>
+              onChange={setSelectedPortal}
+              options={PORTAL_OPTIONS}
+              triggerClassName="py-2"
+            />
           </div>
         </div>
 
@@ -245,11 +255,11 @@ export default function SchemesExplorerPage() {
               <Card key={scheme.id} glass hover className="flex flex-col justify-between relative group">
                 <CardHeader>
                   <div className="flex items-center justify-between gap-2 mb-2">
-                    <span className="text-2xs uppercase tracking-wider font-semibold px-2.5 py-0.5 rounded-full bg-brand-500/15 text-brand-300 border border-brand-500/30">
+                    <span className="text-2xs uppercase tracking-wider font-semibold px-2.5 py-0.5 rounded-lg bg-brand-500/15 text-brand-300 border border-brand-500/30">
                       {scheme.governmentLevel === "central" ? "Central Scheme" : "State Policy"}
                     </span>
                     {scheme.subsidyPercentage && (
-                      <span className="text-2xs font-bold px-2 py-0.5 rounded-full bg-teal-500/15 text-teal-300 border border-teal-500/30">
+                      <span className="text-2xs font-bold px-2 py-0.5 rounded-lg bg-teal-500/15 text-teal-300 border border-teal-500/30">
                         {scheme.subsidyPercentage}% Subsidy
                       </span>
                     )}
@@ -380,7 +390,7 @@ export default function SchemesExplorerPage() {
                   {comparedSchemes.map((scheme) => (
                     <div key={scheme.id} className="glass-card rounded-2xl p-5 border-white/10 space-y-4">
                       <div>
-                        <span className="text-2xs uppercase tracking-wider font-semibold px-2 py-0.5 rounded-full bg-brand-500/15 text-brand-300 border border-brand-500/30">
+                        <span className="text-2xs uppercase tracking-wider font-semibold px-2 py-0.5 rounded-lg bg-brand-500/15 text-brand-300 border border-brand-500/30">
                           {scheme.governmentLevel === "central" ? "Central Scheme" : "State Policy"}
                         </span>
                         <h3 className="text-lg font-bold text-slate-100 mt-2">{scheme.schemeName}</h3>

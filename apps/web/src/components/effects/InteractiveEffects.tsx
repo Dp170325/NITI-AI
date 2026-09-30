@@ -321,7 +321,7 @@ export function MetalStatusBadge({ label }: MetalStatusBadgeProps) {
 
   if (!mounted) {
     return (
-      <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-brand-500/20 text-brand-300 border border-brand-500/30">
+      <span className="px-2.5 py-0.5 rounded-lg text-xs font-semibold bg-brand-500/20 text-brand-300 border border-brand-500/30">
         {label}
       </span>
     );

@@ -11,7 +11,17 @@ import { UserMenu } from "@/components/auth/UserMenu";
 import { BorderBeamCard } from "@/components/effects/InteractiveEffects";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
+import { Select } from "@/components/ui/Select";
 import { Card, CardHeader, CardContent } from "@/components/ui/Card";
+import {
+  GENDER_OPTIONS,
+  SOCIAL_CATEGORY_OPTIONS,
+  AREA_TYPE_OPTIONS,
+  LANGUAGE_OPTIONS,
+  BUSINESS_STAGE_OPTIONS,
+  ENTERPRISE_TYPE_OPTIONS,
+  FUNDING_PURPOSE_OPTIONS
+} from "@/lib/profileConstants";
 import { 
   Sparkles, 
   User, 
@@ -130,7 +140,7 @@ export default function UserProfilePage() {
                     <h1 className="text-2xl font-bold text-slate-50">
                       {profile.fullName || user?.displayName || "Entrepreneur Profile"}
                     </h1>
-                    <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded-full bg-teal-500/15 text-teal-300 border border-teal-500/30">
+                    <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded-lg bg-teal-500/15 text-teal-300 border border-teal-500/30">
                       Verified Account
                     </span>
                   </div>
@@ -211,35 +221,19 @@ export default function UserProfilePage() {
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="text-sm font-medium text-slate-200 block mb-1.5">Gender</label>
-                      <select
-                        value={profile.gender || "prefer_not_to_say"}
-                        onChange={(e) => updatePersonal({ gender: e.target.value as EntrepreneurProfile["gender"] })}
-                        className="w-full rounded-xl px-4 py-2.5 text-sm bg-slate-900 border border-white/10 text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500/50"
-                      >
-                        <option value="female">Female (Qualifies for Stand-Up India & 35% subsidies)</option>
-                        <option value="male">Male</option>
-                        <option value="transgender">Transgender</option>
-                        <option value="prefer_not_to_say">Prefer not to say</option>
-                      </select>
-                    </div>
+                    <Select
+                      label="Gender"
+                      value={profile.gender || "prefer_not_to_say"}
+                      onChange={(val) => updatePersonal({ gender: val as EntrepreneurProfile["gender"] })}
+                      options={GENDER_OPTIONS}
+                    />
 
-                    <div>
-                      <label className="text-sm font-medium text-slate-200 block mb-1.5">Social Category</label>
-                      <select
-                        value={profile.socialCategory || "general"}
-                        onChange={(e) => updatePersonal({ socialCategory: e.target.value as SocialCategory })}
-                        className="w-full rounded-xl px-4 py-2.5 text-sm bg-slate-900 border border-white/10 text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500/50"
-                      >
-                        <option value="general">General</option>
-                        <option value="obc">OBC (Other Backward Classes)</option>
-                        <option value="sc">SC (Scheduled Caste - Special Subsidy)</option>
-                        <option value="st">ST (Scheduled Tribe - Special Subsidy)</option>
-                        <option value="minority">Minority Community</option>
-                        <option value="ews">EWS (Economically Weaker Section)</option>
-                      </select>
-                    </div>
+                    <Select
+                      label="Social Category"
+                      value={profile.socialCategory || "general"}
+                      onChange={(val) => updatePersonal({ socialCategory: val as SocialCategory })}
+                      options={SOCIAL_CATEGORY_OPTIONS}
+                    />
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -249,18 +243,12 @@ export default function UserProfilePage() {
                       onChange={(e) => updatePersonal({ education: e.target.value })}
                       placeholder="e.g. Graduate / Diploma / ITI"
                     />
-                    <div>
-                      <label className="text-sm font-medium text-slate-200 block mb-1.5">Area Type</label>
-                      <select
-                        value={profile.areaType || "urban"}
-                        onChange={(e) => updatePersonal({ areaType: e.target.value as AreaType })}
-                        className="w-full rounded-xl px-4 py-2.5 text-sm bg-slate-900 border border-white/10 text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500/50"
-                      >
-                        <option value="urban">Urban</option>
-                        <option value="rural">Rural (Eligible for highest 35% PMEGP grant)</option>
-                        <option value="semi-urban">Semi-Urban</option>
-                      </select>
-                    </div>
+                    <Select
+                      label="Area Type"
+                      value={profile.areaType || "urban"}
+                      onChange={(val) => updatePersonal({ areaType: val as AreaType })}
+                      options={AREA_TYPE_OPTIONS}
+                    />
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -270,18 +258,12 @@ export default function UserProfilePage() {
                       value={profile.annualIncome || 450000}
                       onChange={(e) => updatePersonal({ annualIncome: Number(e.target.value) })}
                     />
-                    <div>
-                      <label className="text-sm font-medium text-slate-200 block mb-1.5">Preferred AI Language</label>
-                      <select
-                        value={profile.preferredLanguage || "en"}
-                        onChange={(e) => updatePersonal({ preferredLanguage: e.target.value as SupportedLanguage })}
-                        className="w-full rounded-xl px-4 py-2.5 text-sm bg-slate-900 border border-white/10 text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500/50"
-                      >
-                        <option value="en">English</option>
-                        <option value="hi">हिंदी (Hindi)</option>
-                        <option value="hinglish">Hinglish (Hindi in Roman script)</option>
-                      </select>
-                    </div>
+                    <Select
+                      label="Preferred AI Language"
+                      value={profile.preferredLanguage || "en"}
+                      onChange={(val) => updatePersonal({ preferredLanguage: val as SupportedLanguage })}
+                      options={LANGUAGE_OPTIONS}
+                    />
                   </div>
                 </Card>
               )}
@@ -303,19 +285,12 @@ export default function UserProfilePage() {
                       onChange={(e) => updateBusiness({ businessName: e.target.value })}
                       placeholder="e.g. Shanti Agro Foods Pvt Ltd"
                     />
-                    <div>
-                      <label className="text-sm font-medium text-slate-200 block mb-1.5">Business Stage</label>
-                      <select
-                        value={profile.businessStage || "starting"}
-                        onChange={(e) => updateBusiness({ businessStage: e.target.value as BusinessStage })}
-                        className="w-full rounded-xl px-4 py-2.5 text-sm bg-slate-900 border border-white/10 text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500/50"
-                      >
-                        <option value="idea">Idea Stage (Looking for seed grants)</option>
-                        <option value="starting">Starting New Unit (0 - 1 year)</option>
-                        <option value="existing">Existing Established Business</option>
-                        <option value="expansion">Scale-Up / Modernization</option>
-                      </select>
-                    </div>
+                    <Select
+                      label="Business Stage"
+                      value={profile.businessStage || "starting"}
+                      onChange={(val) => updateBusiness({ businessStage: val as BusinessStage })}
+                      options={BUSINESS_STAGE_OPTIONS}
+                    />
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -334,18 +309,12 @@ export default function UserProfilePage() {
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div>
-                      <label className="text-sm font-medium text-slate-200 block mb-1.5">Enterprise Type</label>
-                      <select
-                        value={profile.enterpriseType || "micro"}
-                        onChange={(e) => updateBusiness({ enterpriseType: e.target.value as EnterpriseType })}
-                        className="w-full rounded-xl px-4 py-2.5 text-sm bg-slate-900 border border-white/10 text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500/50"
-                      >
-                        <option value="micro">Micro (&lt; ₹1 Cr investment)</option>
-                        <option value="small">Small (&lt; ₹10 Cr)</option>
-                        <option value="medium">Medium (&lt; ₹50 Cr)</option>
-                      </select>
-                    </div>
+                    <Select
+                      label="Enterprise Type"
+                      value={profile.enterpriseType || "micro"}
+                      onChange={(val) => updateBusiness({ enterpriseType: val as EnterpriseType })}
+                      options={ENTERPRISE_TYPE_OPTIONS}
+                    />
                     <Input
                       label="Annual Turnover (₹)"
                       type="number"
@@ -379,20 +348,12 @@ export default function UserProfilePage() {
                       value={profile.fundingRequired || 500000}
                       onChange={(e) => updateFunding({ fundingRequired: Number(e.target.value) })}
                     />
-                    <div>
-                      <label className="text-sm font-medium text-slate-200 block mb-1.5">Primary Purpose of Capital</label>
-                      <select
-                        value={profile.fundingPurpose || "machinery"}
-                        onChange={(e) => updateFunding({ fundingPurpose: e.target.value as EntrepreneurProfile["fundingPurpose"] })}
-                        className="w-full rounded-xl px-4 py-2.5 text-sm bg-slate-900 border border-white/10 text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500/50"
-                      >
-                        <option value="machinery">Machinery & Plant Equipment</option>
-                        <option value="working_capital">Working Capital & Raw Materials</option>
-                        <option value="expansion">New Factory / Unit Expansion</option>
-                        <option value="technology">Clean Tech / Automation (ZED)</option>
-                        <option value="marketing">Export & Branding Development</option>
-                      </select>
-                    </div>
+                    <Select
+                      label="Primary Purpose of Capital"
+                      value={profile.fundingPurpose || "machinery"}
+                      onChange={(val) => updateFunding({ fundingPurpose: val as EntrepreneurProfile["fundingPurpose"] })}
+                      options={FUNDING_PURPOSE_OPTIONS}
+                    />
                   </div>
 
                   <div className="pt-2">
@@ -467,7 +428,7 @@ export default function UserProfilePage() {
                     <div key={r.scheme.id} className="p-3 rounded-xl bg-slate-900/60 border border-white/5 space-y-1">
                       <div className="flex items-center justify-between">
                         <span className="font-bold text-slate-200">{r.scheme.shortName}</span>
-                        <span className="text-[10px] font-semibold text-teal-400 bg-teal-500/10 px-2 py-0.5 rounded-full border border-teal-500/20">
+                        <span className="text-[10px] font-semibold text-teal-400 bg-teal-500/10 px-2 py-0.5 rounded-lg border border-teal-500/20">
                           {r.matchScore}% Match
                         </span>
                       </div>

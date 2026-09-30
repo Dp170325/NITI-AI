@@ -109,8 +109,8 @@ export default function LandingPage() {
 
           {/* Badge with BorderBeam and ThinkingOrb */}
           <div className="mb-8 inline-block">
-            <BorderBeamCard size="sm" colorVariant="sunset" strength={0.8} className="rounded-full">
-              <div className="inline-flex items-center gap-2.5 glass-card rounded-full px-4 py-1.5 text-xs text-brand-300 font-medium border-brand-500/20 bg-slate-950/80">
+            <BorderBeamCard size="sm" colorVariant="sunset" strength={0.8} className="rounded-xl">
+              <div className="inline-flex items-center gap-2.5 glass-card rounded-xl px-4 py-1.5 text-xs text-brand-300 font-medium border-brand-500/20 bg-slate-950/80">
                 <LiveThinkingOrb state="breathing" size={20} theme="dark" />
                 <span>AI-Powered Government Scheme Discovery</span>
               </div>
