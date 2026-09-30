@@ -20,6 +20,7 @@ export interface SelectProps {
   error?: string;
   hint?: string;
   disabled?: boolean;
+  align?: "left" | "right";
   className?: string;
   triggerClassName?: string;
   menuClassName?: string;
@@ -35,6 +36,7 @@ export function Select({
   error,
   hint,
   disabled = false,
+  align = "left",
   className,
   triggerClassName,
   menuClassName,
@@ -114,7 +116,7 @@ export function Select({
   };
 
   return (
-    <div className={cn("relative flex flex-col gap-1.5", className)} ref={containerRef}>
+    <div className={cn("relative flex flex-col gap-1.5", isOpen ? "z-50" : "z-10", className)} ref={containerRef}>
       {label && (
         <label
           htmlFor={selectId}
@@ -156,17 +158,19 @@ export function Select({
         />
       </button>
 
-      {/* Floating Rounded-Rectangle Popover Menu */}
+      {/* Floating Rounded-Rectangle Popover Menu (Brought to Front with Elevated Stacking Context) */}
       {isOpen && (
         <div
           role="listbox"
           tabIndex={0}
           onKeyDown={handleMenuKeyDown}
           className={cn(
-            "absolute top-full left-0 right-0 mt-1.5 z-50",
-            "rounded-2xl p-1.5 max-h-64 overflow-y-auto",
-            "bg-slate-900/95 backdrop-blur-xl border border-white/15",
-            "shadow-2xl shadow-black/80 space-y-1 animate-in fade-in zoom-in-95 duration-150",
+            "absolute top-full mt-2 z-50",
+            align === "right" ? "right-0" : "left-0",
+            "w-full min-w-full sm:min-w-[280px] max-w-[90vw]",
+            "rounded-2xl p-2 max-h-72 overflow-y-auto",
+            "bg-slate-900/98 backdrop-blur-2xl border border-white/20",
+            "shadow-[0_20px_50px_rgba(0,0,0,0.95)] ring-1 ring-white/10 space-y-1 animate-in fade-in zoom-in-95 duration-150",
             menuClassName
           )}
         >
