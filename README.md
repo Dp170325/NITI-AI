@@ -21,12 +21,42 @@
 
 ## ✨ Key Features
 
-- **🎯 Intelligent Scheme Matching:** Smart rule-based and semantic engine that evaluates business stage, sector, demographic eligibility (gender, category, location), and funding requirements against hundreds of national & state schemes (e.g., PMEGP, Stand-Up India, MUDRA, CGTMSE).
-- **🗣️ Multilingual NITI Saathi AI:** Conversational mentor supporting English, Hindi, and regional languages for scheme query resolution, document assistance, and application guidance.
-- **🔐 Secure Authentication:** Seamless email/password, Google OAuth, and Apple sign-in backed by Firebase Authentication and Cloud Firestore profile persistence.
-- **⚡ Interactive Modern UI:** High-performance Liquid Glass interface with sound-reactive voice animations, thinking orbs, metallic badges, and responsive rounded controls.
-- **📊 Personalized Roadmap:** Generates step-by-step milestone roadmaps for eligibility verification, document preparation, portal application, and subsidy disbursal.
-- **🚀 Edge-Optimized Performance:** Static generation on Next.js 14 deployed to Cloudflare Workers with global CDN static asset streaming and sub-100ms load times.
+- **🎯 Intelligent Government Scheme Matching:**  
+  Uses a hybrid rule-based and semantic recommendation engine to match users with relevant central and state government schemes. The system evaluates business stage, industry sector, applicant category, gender, location, funding requirements, business type, and eligibility conditions across schemes such as PMEGP, Stand-Up India, MUDRA, CGTMSE, Startup India, and state-specific programs.
+
+- **🧠 Explainable Eligibility Analysis:**  
+  Provides transparent eligibility results with match scores, qualifying conditions, missing requirements, rejection reasons, required documents, and actionable recommendations so users understand exactly why a scheme is suitable.
+
+- **🗣️ Multilingual NITI Saathi AI Mentor:**  
+  A conversational AI assistant supporting English, Hindi, and regional languages. It helps users discover schemes, understand eligibility criteria, prepare documents, complete application forms, resolve queries, and receive step-by-step guidance throughout the funding journey.
+
+- **🔐 Secure Authentication and User Profiles:**  
+  Supports email/password authentication, Google OAuth, and Apple Sign-In through Firebase Authentication. User profiles, saved schemes, application progress, uploaded documents, preferences, and personalized recommendations are securely managed using Cloud Firestore.
+
+- **📄 Document Readiness and Assistance:**  
+  Generates personalized document checklists based on the selected scheme and applicant profile. Users can track document readiness, identify missing files, receive document explanations, and follow preparation instructions before beginning an application.
+
+- **📊 Personalized Application Roadmap:**  
+  Creates a milestone-based roadmap covering eligibility verification, business information preparation, document collection, application submission, department verification, sanction approval, and subsidy or loan disbursal.
+
+- **🔔 Application Progress Tracking:**  
+  Allows users to monitor the status of each saved scheme or application through stages such as shortlisted, documents pending, submitted, under review, approved, rejected, or disbursed. Optional reminders can notify users about deadlines and pending actions.
+
+- **🎨 Interactive Liquid Glass Interface:**  
+  Provides a modern, responsive interface with liquid-glass cards, rounded controls, metallic badges, animated thinking orbs, sound-reactive voice visualizations, smooth transitions, accessible color contrast, and mobile-first layouts.
+
+- **⚡ High-Performance Edge Architecture:**  
+  Built with Next.js 14 and optimized for static generation, code splitting, image optimization, caching, and edge delivery. Deployed on Cloudflare Workers with global CDN distribution for fast page rendering and low-latency asset delivery.
+
+- **🛡️ Privacy, Security, and Reliability:**  
+  Applies secure authentication, protected user routes, server-side validation, least-privilege Firestore rules, encrypted data transmission, input sanitization, and privacy-focused data handling for sensitive applicant and business information.
+
+- **📱 Responsive and Accessible Experience:**  
+  Designed to work consistently across desktops, tablets, and smartphones with keyboard navigation, semantic HTML, screen-reader support, readable typography, responsive forms, and accessible interactive components.
+
+- **📈 Analytics and Continuous Improvement:**  
+  Tracks anonymized search patterns, popular schemes, user drop-off points, application completion rates, and mentor interactions to improve scheme coverage, recommendation quality, and overall user experience.
+
 
 ---
 
